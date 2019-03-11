@@ -1,0 +1,138 @@
+<html>
+
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link href='style.css' rel='stylesheet'>
+    <meta charset="utf-8">
+    <title>Calculadora</title>
+
+    <script type="text/javascript">
+      function validateForm() {
+            var aparelho_som = document.getElementById("tempo_som").value;
+            var chuveiro = document.getElementById("tempo_chuveiro").value;
+            var geladeira = document.getElementById("geladeira").value; 
+            var ferro = document.getElementById("tempo_ferro").value; 
+            var tv = document.getElementById("tempo_tv").value;     
+            var radio = document.getElementById("tempo_radio").value;
+            // dividir o gasto de gás pelo número de pessoas
+            var gas = document.getElementById("gas").value;
+            var num_pessoas = document.getElementById("num_pessoas").value; 
+            var computador = document.getElementById("computador").value;
+            var lava_roupa = document.getElementById("tempo_lava_roupa").value;
+
+            var gasolina = document.getElementById("gasolina").value;
+            gasolina = gasolina*0.75;
+            var etanol_gasolina = 0.26 * gasolina;
+            var octano = 0.74*0.73*gasolina;
+            var heptano = 0.74*0.27*gasolina;
+
+            var carbono_octano, carbono_heptano, carbono_etanol_gasolina;
+            //Estequiometria da gasolina
+            carbono_octano = (8*44*octano)/114;
+            carbono_etanol_gasolina = (etanol_gasolina*2*44)/46;
+            carbono_heptano = (heptano*7*44)/100;
+
+            var carbono_gasolina = (52*(carbono_etanol_gasolina+carbono_heptano+carbono_octano))/1000;
+
+            var gasto_total;
+            var gasto_geladeira, gasto_lava_roupa, gasto_computador, gasto_gas, gasto_aparelho_som, gasto_chuveiro, gasto_ferro, gasto_tv;
+
+            if (geladeira = "Sim"){
+                  gasto_geladeira = 24*365*200;
+            }
+            else{
+                  gasto_geladeira = 0;
+            }
+
+            if (computador = "Sim"){
+                  gasto_computador = 6*365*130;
+            }
+            else{
+                  gasto_computador = 0;
+            }
+
+            gasto_lava_roupa = (lava_roupa/60)*365*1500;
+            gasto_chuveiro = (chuveiro/60)*365*3000;
+            gasto_aparelho_som = (aparelho_som/60)*365*120;
+            gasto_ferro = (ferro/60)*365*500;
+            gasto_tv = (tv/60)*365*200;
+            gasto_radio = (radio/60)*365*50; 
+            gasto_gas = (gas*11.7)/1000 //o resultado daria em kWh caso nao fosse dividido por 1000
+            
+
+            gasto_total = (gasto_radio + gasto_gas+  gasto_computador + gasto_chuveiro + gasto_aparelho_som + gasto_ferro + gasto_geladeira + gasto_tv)/1000000;
+
+            //Convertendo o gasto total em megawatts para quantidade de carbono emitida
+            carbono_emitido = (gasto_total * 0.0740) + carbono_gasolina;
+
+            if(gasto_total){
+                  //alert ('A quantidade de carbono emitida por ano por você é de ' + carbono_emitido + ' toneladas');
+                  alert (carbono_gasolina);
+
+            }
+
+            else {
+                  alert ('deu ruim');
+                  return false;
+            }
+      }
+    </script>
+
+  </head>
+
+  <body>
+      <div id="banner">
+      <h1>Calculadora de gastos energéticos</h1>
+      <p>(Descrição)</p>
+      </div>
+
+      <form id="calculadora" onsubmit="return validateForm()">
+            <div class="container">
+                  <p id="chuveiroLabel">Tempo de uso do chuveiro elétrico por dia (min):</p>
+                  <input type="number" name="tempo_chuveiro" id="tempo_chuveiro" placeholder=""/><br>
+
+                  <p id="somLabel">Tempo de uso do aparelho de som por dia (min):</p>
+                  <input type="number" name="tempo_som" id="tempo_som" placeholder=""/><br>
+
+                  <p id="ferroLabel">Tempo de uso do ferro elétrico por dia (min):</p>
+                  <input type="number" name="tempo_ferro" id="tempo_ferro" placeholder=""/><br>
+
+                  <p id="tvLabel">Tempo de uso da televisão por dia (min):</p>
+                  <input type="number" name="tempo_tv" id="tempo_tv" placeholder=""/><br>
+
+                  <p id="geladeiraLabel">Possui geladeira em casa?</p>
+                  <input type="text" name="geladeira" id="geladeira" placeholder=""/><br>
+
+                  <p id="radioLabel">Tempo de uso do rádio por dia (min):</p>
+                  <input type="number" name="tempo_radio" id="tempo_radio" placeholder=""/><br>
+
+                  <p id="radioLabel">Consumo de gás na casa em m³:</p>
+                  <input type="number" name="gas" id="gas" placeholder=""/><br>
+
+                  <p id="radioLabel">Número de pessoas na casa:</p>
+                  <input type="number" name="num_pessoas" id="num_pessoas" placeholder=""/><br>
+
+                  <p id="geladeiraLabel">Possui computador em casa?</p>
+                  <input type="text" name="computador" id="computador" placeholder=""/><br>
+                  
+                  <p id="radioLabel">Tempo de uso da maquina de lavar roupa por dia (min):</p>
+                  <input type="number" name="tempo_lava_roupa" id="tempo_lava_roupa" placeholder=""/><br>
+
+                  <!-- COLOCAR UMA SELEÇÃO PARA O TIPO DE VEÍCULO 
+                  COLOCAR AQUI O TIPO DE COMBUSTÍVEL UTILIZADO-->
+
+                  <p id="radioLabel">Quantidade de gasolina gasta por semana (Litros):</p>
+                  <input type="number" name="gasolina" id="gasolina" placeholder=""/><br>
+
+                  <!-- COLOCAR GASTO DE ENERGIA BASEADO NO TEMPO QUE A PESSOA
+                  USA O NOTEBOOK OU COMPUTADOR-->
+
+                  <button type="submit">Calcular</button>
+            </div>
+      </form>
+
+  </body>
+</html>
